@@ -14,8 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $meetings = Meeting::factory(10)->make();
-        dd($meetings);
+        Meeting::factory(100)->create();
         // \App\Models\User::factory(10)->create();
     }
 }
