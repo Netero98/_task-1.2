@@ -3,21 +3,22 @@ async function getEmployees() {
 
    let res = await fetch(`http://127.0.0.1:8000/api/employees`);
    let employees = await res.json();
-   employees = employees['data'];
+   employees = employees.data;
 
    document.querySelector('.employees-list').innerHTML = '';
-
+   counter = 0
    employees.forEach(() => {
          document.querySelector('.employees-list').innerHTML += `
          <div class="card" style="width: 18rem;">
             <div class="card-body">
-               <p class="card-text">Имя: ${employees.name}</p>
-               <p class="card-text">Должность: ${employees.position}</p>
-               <a href="#" class="card-link" onclick="removeEmployee(${employees.id})">Удалить</a>
-               <div><a href="#" class="card-link" onclick="selectEmployee('${employees.id}', '${employees.name}','${employees.position}')">Выбрать для редактирования</a></div>
+               <p class="card-text">Имя: ${employees[counter].name}</p>
+               <p class="card-text">Должность: ${employees[counter].position}</p>
+               <a href="#" class="card-link" onclick="removeEmployee(${[employees[counter].id]})">Удалить</a>
+               <div><a href="#" class="card-link" onclick="selectEmployee('${employees[counter].id}', '${employees[counter].name}','${employees[counter].position}')">Выбрать для редактирования</a></div>
             </div>
          </div>
-      `
+      `;
+      counter++;
    });
 };
 
