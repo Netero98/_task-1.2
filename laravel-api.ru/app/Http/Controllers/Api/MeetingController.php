@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MeetingResource;
 use App\Models\Meeting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,10 +43,10 @@ class MeetingController extends Controller {
                 }
             }
             if($meetingsArr){
-            $optimumMeetingsArr[] = $meetingsArr[$idOfBestVar];
-            $dayStarts = strtotime($meetingsArr[$idOfBestVar]['endstamp']);
-            $dayStarts +=60; // следующее собрание должно начинаться хотя бы через минуту после конца предыдущего
-            unset($meetingsArr[$idOfBestVar]);
+                $optimumMeetingsArr[] = $meetingsArr[$idOfBestVar];
+                $dayStarts = strtotime($meetingsArr[$idOfBestVar]['endstamp']);
+                $dayStarts +=60; // следующее собрание должно начинаться хотя бы через минуту после конца предыдущего
+                unset($meetingsArr[$idOfBestVar]);
             }
         }
         return $optimumMeetingsArr;
@@ -57,9 +58,9 @@ class MeetingController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return Meeting::all(); //на случай, если нужны все существующие расписания, а не за конкретный промежуток времени.
+    public function index() {
+         //на случай, если нужны все существующие расписания, а не за конкретный промежуток времени.
+        return MeetingResource::collection(Meeting::all());
     }
 
     /**
@@ -68,8 +69,7 @@ class MeetingController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -79,9 +79,8 @@ class MeetingController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        return Meeting::find($id);
+    public function show($id) {
+        return new MeetingResource(Meeting::findOrFail($id)); //нехорошо, что объект создается внутри метода
     }
 
     /**
