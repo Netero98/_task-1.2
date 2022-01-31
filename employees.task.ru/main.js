@@ -1,19 +1,20 @@
 let global_id = null;
 async function getEmployees() {
 
-   let res = await fetch(`https://meetings.api.ru/getEmployees`);
+   let res = await fetch(`http://127.0.0.1:8000/api/employees`);
    let employees = await res.json();
+   employees = employees['data'];
 
    document.querySelector('.employees-list').innerHTML = '';
 
-   employees.forEach((employee) => {
-      document.querySelector('.employees-list').innerHTML += `
+   employees.forEach(() => {
+         document.querySelector('.employees-list').innerHTML += `
          <div class="card" style="width: 18rem;">
             <div class="card-body">
-               <p class="card-text">Имя: ${employee.name}</p>
-               <p class="card-text">Должность: ${employee.position}</p>
-               <a href="#" class="card-link" onclick="removeEmployee(${employee.id})">Удалить</a>
-               <div><a href="#" class="card-link" onclick="selectEmployee('${employee.id}', '${employee.name}','${employee.position}')">Выбрать для редактирования</a></div>
+               <p class="card-text">Имя: ${employees.name}</p>
+               <p class="card-text">Должность: ${employees.position}</p>
+               <a href="#" class="card-link" onclick="removeEmployee(${employees.id})">Удалить</a>
+               <div><a href="#" class="card-link" onclick="selectEmployee('${employees.id}', '${employees.name}','${employees.position}')">Выбрать для редактирования</a></div>
             </div>
          </div>
       `
@@ -29,16 +30,12 @@ async function addEmployee() {
    formData.append('name', name);
    formData.append('position', position);
 
-   const res = await fetch('https://meetings.api.ru/addEmployee', {
+   const res = await fetch('http://127.0.0.1:8000/api/employees', {
       method: 'POST',
       body: formData
    });
 
-   const data = await res.json();
-
-   if (data.status === true) {
-      await getEmployees();
-   }
+   await getEmployees();
 }
 
 function selectEmployee(id, name, position) {
@@ -57,25 +54,18 @@ async function updateEmployee() {
       position: position
    };
 
-   const res = await fetch(`https://meetings.api.ru/updateEmployee/${global_id}`, {
+   const res = await fetch(`http://127.0.0.1:8000/api/employees/${global_id}`, {
       method: "PATCH",
       body: JSON.stringify(data)
    });
-
-   let resData = res.json();
-
    await getEmployees();
 }
 
 async function removeEmployee(id) {
-   const res = await fetch(`https://meetings.api.ru/removeEmployee/${id}`, {
+   const res = await fetch(`http://127.0.0.1:8000/api/employees/${id}`, {
       method: "DELETE"
    });
-   const data = await res.json();
-
-   if(data.status === true) {
-      await getEmployees();
-   }
+   await getEmployees();
 }
 
 getEmployees();
