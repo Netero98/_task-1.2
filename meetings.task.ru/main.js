@@ -59,7 +59,7 @@ async function addMeeting() {
    formData.append('startstamp', startStamp);
    formData.append('endstamp', endStamp);
 
-   const res = await fetch('http://127.0.0.1:8000/api/addMeeting', {
+   const res = await fetch('http://127.0.0.1:8000/api/meetings', {
       method: 'POST',
       body: formData
    });
