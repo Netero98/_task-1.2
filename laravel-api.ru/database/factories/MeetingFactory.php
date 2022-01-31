@@ -13,8 +13,13 @@ class MeetingFactory extends Factory
      */
     public function definition()
     {
+        $randomStart = (1643580001 + rand(0,9)*3600);
+        $startStamp = date('Y-m-d H:i:s', $randomStart);
+        $endStamp = date('Y-m-d H:i:s', $randomStart + 3600);
         return [
-            //
+            'name' => 'Ivan',
+            'startstamp' => $startStamp,
+            'endstamp' => $endStamp
         ];
     }
 }
