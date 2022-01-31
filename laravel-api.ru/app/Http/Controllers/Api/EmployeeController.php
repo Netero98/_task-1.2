@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Http\Resources\EmployeeResource;
 
 class EmployeeController extends Controller
 {
@@ -15,7 +16,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return Employee::all();
+        return EmployeeResource::collection(Employee::all());
     }
 
     /**
@@ -37,7 +38,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        //
+        return new EmployeeResource(Employee::findOrFail($id)); //нехорошо, что объект создается внутри метода
     }
 
     /**
