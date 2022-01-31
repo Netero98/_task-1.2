@@ -7,28 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Http\Resources\EmployeeResource;
 
-class EmployeeController extends Controller
-{
+class EmployeeController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return EmployeeResource::collection(Employee::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    
 
     /**
      * Display the specified resource.
@@ -36,10 +25,22 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         return new EmployeeResource(Employee::findOrFail($id)); //нехорошо, что объект создается внутри метода
     }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        $createdEmployee = Employee::create($request->all());
+        return new EmployeeResource($createdEmployee);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -48,8 +49,7 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
