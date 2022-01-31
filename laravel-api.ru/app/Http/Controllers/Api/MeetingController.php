@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MeetingController extends Controller {
-    
+
+
      //Все собрания за промежуток времени
     public function getMeetings(int $dayStarts,int $dayEnds) {
         $meetings = DB::table('meetings')
@@ -19,6 +20,7 @@ class MeetingController extends Controller {
             ->get();
         return $meetings;
     }
+
 
     // оптимальное расписание за промежуток времени:
     public function getOptimumMeetings(int $dayStarts,int $dayEnds) {
@@ -63,15 +65,6 @@ class MeetingController extends Controller {
         return MeetingResource::collection(Meeting::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -82,6 +75,19 @@ class MeetingController extends Controller {
     public function show($id) {
         return new MeetingResource(Meeting::findOrFail($id)); //нехорошо, что объект создается внутри метода
     }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        $createdMeeting = Meeting::create($request->all());
+        return new MeetingResource($createdMeeting);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -94,6 +100,7 @@ class MeetingController extends Controller {
     {
         //
     }
+
 
     /**
      * Remove the specified resource from storage.
