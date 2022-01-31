@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Meeting;
+use App\Models\Employee;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,5 +17,6 @@ class DatabaseSeeder extends Seeder
     {
         Meeting::factory(100)->create();
         // \App\Models\User::factory(10)->create();
+        Employee::factory(100)->create();
     }
 }
