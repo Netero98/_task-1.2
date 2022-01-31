@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\MeetingController;
-use App\Models\EmployeeController;
+use App\Http\Controllers\Api\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
