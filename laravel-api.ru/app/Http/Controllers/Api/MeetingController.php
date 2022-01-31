@@ -20,7 +20,7 @@ class MeetingController extends Controller {
     }
 
     // оптимальное расписание за промежуток времени:
-    public function getOptimumMeetings($dayStarts, $dayEnds) {
+    public function getOptimumMeetings(int $dayStarts,int $dayEnds) {
         $meetings = DB::table('meetings')
             ->where('startstamp', '>',date('Y-m-d H:i:s', $dayStarts))
             ->where('endstamp', '<',date('Y-m-d H:i:s', $dayEnds))
