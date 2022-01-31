@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\MeetingController;
+use App\Models\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//базовые CRUD операции:
 Route::apiResources([
     'meetings' => MeetingController::class,
     'employees' => EmployeeController::class
 ]);
+
+// кастомные операции:
+Route::get('/getMeetings/{dayStarts}/{dayEnds}', [MeetingController::class, 'getMeetings']);
+Route::get('/getOptimumMeetings/{dayStarts}/{dayEnds}', [MeetingController::class, 'getOptimumMeetings']);
+
