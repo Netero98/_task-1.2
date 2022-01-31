@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResources([
     'meetings' => MeetingController::class,
+    'employees' => EmployeeController::class
 ]);
