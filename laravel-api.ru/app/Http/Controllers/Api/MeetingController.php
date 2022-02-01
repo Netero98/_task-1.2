@@ -7,6 +7,7 @@ use App\Http\Resources\MeetingResource;
 use App\Models\Meeting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\MeetingStoreRequest;
 
 class MeetingController extends Controller {
 
@@ -83,8 +84,8 @@ class MeetingController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $createdMeeting = Meeting::create($request->all());
+    public function store(MeetingStoreRequest $request) {
+        $createdMeeting = Meeting::create($request->validated());
         return new MeetingResource($createdMeeting);
     }
 
