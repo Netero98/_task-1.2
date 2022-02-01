@@ -73,8 +73,8 @@ class MeetingController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        return new MeetingResource(Meeting::findOrFail($id)); //нехорошо, что объект создается внутри метода
+    public function show(Meeting $meeting) {
+        return new MeetingResource($meeting);
     }
 
 

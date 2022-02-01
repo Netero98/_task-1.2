@@ -18,17 +18,15 @@ class EmployeeController extends Controller {
         return EmployeeResource::collection(Employee::all());
     }
 
-
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        return new EmployeeResource(Employee::findOrFail($id)); //нехорошо, что объект создается внутри метода
+    public function show(Employee $employee) {
+        return new EmployeeResource($employee); //нехорошо, что объект создается внутри метода
     }
-
 
     /**
      * Store a newly created resource in storage.
