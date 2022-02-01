@@ -27,7 +27,7 @@ Route::apiResources([
     'employees' => EmployeeController::class
 ]);
 
-// кастомные операции:
+// кастомные запросы:
 Route::get('/getMeetings/{dayStarts}/{dayEnds}', [MeetingController::class, 'getMeetings']);
 Route::get('/getOptimumMeetings/{dayStarts}/{dayEnds}', [MeetingController::class, 'getOptimumMeetings']);
 
