@@ -51,7 +51,7 @@ class EmployeeController extends Controller {
      */
     public function update(EmployeeStoreRequest $request, Employee $employee) {
         $employee->update($request->validated());
-        return $employee;
+        return new EmployeeResource($employee);
     }
 
 
