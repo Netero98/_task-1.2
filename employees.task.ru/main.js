@@ -50,17 +50,18 @@ async function updateEmployee() {
    const name = document.getElementById('update-name').value,
    position = document.getElementById('update-position').value;
 
-   const data = {
-      name: name,
-      position: position
-   };
+   let formData = new FormData();
+   formData.append('_method', 'PUT');
+   formData.append('name', name);
+   formData.append('position', position);
 
    const res = await fetch(`http://127.0.0.1:8000/api/employees/${global_id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data)
+      method: 'POST',
+      body: formData
    });
    await getEmployees();
 }
+
 
 async function removeEmployee(id) {
    const res = await fetch(`http://127.0.0.1:8000/api/employees/${id}`, {
