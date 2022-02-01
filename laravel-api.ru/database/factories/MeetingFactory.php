@@ -15,9 +15,9 @@ class MeetingFactory extends Factory
     {
         $randomStart = (1643580001 + rand(0,9)*3600);
         $startStamp = date('Y-m-d H:i:s', $randomStart);
-        $endStamp = date('Y-m-d H:i:s', $randomStart + 3600);
+        $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
         return [
-            'name' => $this->faker->sentence,
+            'name' => $this->faker->work,
             'startstamp' => $startStamp,
             'endstamp' => $endStamp
         ];
