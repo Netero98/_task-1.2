@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EmployeeResource;
-use App\Models\Employee;
 use App\Http\Requests\EmployeeStoreRequest;
+use App\Models\Employee;
 use Symfony\Component\HttpFoundation\Response;
 
 class EmployeeController extends Controller {
@@ -25,7 +25,7 @@ class EmployeeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Employee $employee) {
-        return new EmployeeResource($employee); //нехорошо, что объект создается внутри метода
+        return new EmployeeResource($employee); 
     }
 
     /**
