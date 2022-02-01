@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MeetingResource;
+use App\Http\Requests\MeetingStoreRequest;
 use App\Models\Meeting;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\MeetingStoreRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class MeetingController extends Controller {
