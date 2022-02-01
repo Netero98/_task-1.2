@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Requests\EmployeeStoreRequest;
 
 class EmployeeController extends Controller {
     /**
@@ -17,7 +18,6 @@ class EmployeeController extends Controller {
         return EmployeeResource::collection(Employee::all());
     }
 
-    
 
     /**
      * Display the specified resource.
@@ -36,8 +36,8 @@ class EmployeeController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $createdEmployee = Employee::create($request->all());
+    public function store(EmployeeStoreRequest $request) {
+        $createdEmployee = Employee::create($request->validated());
         return new EmployeeResource($createdEmployee);
     }
 
@@ -52,6 +52,7 @@ class EmployeeController extends Controller {
     public function update(Request $request, $id) {
         //
     }
+
 
     /**
      * Remove the specified resource from storage.
