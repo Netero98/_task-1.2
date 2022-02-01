@@ -101,7 +101,7 @@ class MeetingController extends Controller {
     {
         $meeting->update($request->validated());
 
-        return $meeting;
+        return new MeetingResource($meeting);
     }
 
 
