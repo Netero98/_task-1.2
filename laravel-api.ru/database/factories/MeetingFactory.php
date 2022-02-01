@@ -17,7 +17,7 @@ class MeetingFactory extends Factory
         $startStamp = date('Y-m-d H:i:s', $randomStart);
         $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
         return [
-            'name' => $this->faker->work,
+            'name' => $this->faker->sentence(),
             'startstamp' => $startStamp,
             'endstamp' => $endStamp
         ];
