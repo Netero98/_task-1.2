@@ -13,7 +13,7 @@ async function getEmployees() {
             <div class="card-body">
                <p class="card-text">Имя: ${employees[counter].name}</p>
                <p class="card-text">Должность: ${employees[counter].position}</p>
-               <a href="#" class="card-link" onclick="removeEmployee(${[employees[counter].id]})">Удалить</a>
+               <a href="#" class="card-link" onclick="deleteEmployee(${[employees[counter].id]})">Удалить</a>
                <div><a href="#" class="card-link" onclick="selectEmployee('${employees[counter].id}', '${employees[counter].name}','${employees[counter].position}')">Выбрать для редактирования</a></div>
             </div>
          </div>
@@ -63,9 +63,13 @@ async function updateEmployee() {
 }
 
 
-async function removeEmployee(id) {
+async function deleteEmployee(id) {
+   let formData = new FormData();
+   formData.append('_method', 'DELETE');
+
    const res = await fetch(`http://127.0.0.1:8000/api/employees/${id}`, {
-      method: "DELETE"
+      method: "POST",
+      body: formData
    });
    await getEmployees();
 }

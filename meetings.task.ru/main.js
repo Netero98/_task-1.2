@@ -97,11 +97,15 @@ async function updateMeeting() {
 }
 
 async function deleteMeeting(id) {
-   const res = await fetch(`http://127.0.0.1:8000/api/deleteMeeting/${id}`, {
-      method: "DELETE"
+   let formData = new FormData();
+   formData.append('_method', 'DELETE');
+
+   const res = await fetch(`http://127.0.0.1:8000/api/meetings/${id}`, {
+      method: "POST",
+      body: formData
    });
-      await getMeetings();
-      await getOptimumMeetings();
+   await getMeetings();
+   await getOptimumMeetings();
 }
 
 getMeetings();

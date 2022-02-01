@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MeetingResource;
 use App\Models\Meeting;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\MeetingStoreRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class MeetingController extends Controller {
 
@@ -97,8 +97,7 @@ class MeetingController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MeetingStoreRequest $request, Meeting $meeting)
-    {
+    public function update(MeetingStoreRequest $request, Meeting $meeting) {
         $meeting->update($request->validated());
 
         return new MeetingResource($meeting);
@@ -111,8 +110,8 @@ class MeetingController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Meeting $meeting) {
+        $meeting->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
