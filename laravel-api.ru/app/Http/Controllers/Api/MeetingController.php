@@ -97,9 +97,11 @@ class MeetingController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MeetingStoreRequest $request, Meeting $meeting)
     {
-        //
+        $meeting->update($request->validated());
+
+        return $meeting;
     }
 
 
