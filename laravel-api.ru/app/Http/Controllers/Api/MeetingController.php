@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MeetingResource;
 use App\Http\Requests\MeetingStoreRequest;
 use App\Models\Meeting;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +20,7 @@ class MeetingController extends Controller {
             ->where('endstamp', '<',date('Y-m-d H:i:s', $dayEnds))
             ->orderBy('startstamp')
             ->get();
-        return $meetings;
+        return MeetingResource::collection($meetings);
     }
 
 
@@ -52,7 +53,13 @@ class MeetingController extends Controller {
                 unset($meetingsArr[$idOfBestVar]);
             }
         }
-        return $optimumMeetingsArr;
+
+        $arrayOfStdObjects = [];
+        foreach($optimumMeetingsArr as $value) {
+            $arrayOfStdObjects[] = json_decode(json_encode($value));
+        }
+        $optimumMeetingsCollection =collect($arrayOfStdObjects);
+        return MeetingResource::collection($optimumMeetingsCollection);
     }
 
 

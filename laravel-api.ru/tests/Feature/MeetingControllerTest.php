@@ -7,71 +7,109 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use App\Models\Meeting;
+use Database\Seeders\MeetingSeeder;
 
 class MeetingControllerTest extends TestCase {
+   use RefreshDatabase;
 
    public function testGetMeetingsReturnsDataInValidFormat() {
-      $randomStart = (1643580060 + rand(0,1000)*3600);
+
+      $randomStart = (1643500000 + rand(0,1000)*3600);
       $startStamp = date('Y-m-d H:i:s', $randomStart);
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
       $dayStarts = $randomStart-1;
       $dayEnds = $randomStart + 3001;
 
-      $meeting = Meeting::create(
+      $meeting = Meeting::factory()->create(
          [
             'name' => $this->faker->sentence(),
-            'startstamp' =>  $startStamp,
-            'endstamp' => $endStamp,
-         ]
-      );
-
+            'startstamp' => $startStamp,
+            'endstamp' => $endStamp
+         ]);
 
       $this->json('get', "api/getMeetings/$dayStarts/$dayEnds")
          ->assertStatus(Response::HTTP_OK)
          ->assertJsonStructure(
             [
                'data' => [
-                  'id',
-                  'name',
-                  'startstamp',
-                  'endstamp',
-                  'created_at',
+                  '*' => [
+                     'id',
+                     'name',
+                     'startstamp',
+                     'endstamp',
+                     'created_at',
+                  ]
                ]
             ]
          );
    }
 
 
-   public function testGetOptimumMeetingsReturnsDataInValidFormat() {
-      $randomStart = (1643580060 + rand(0,1000)*3600);
+   public function testGetMeetingsReturnsValidSingleData() {
+      
+      $randomStart = (1643500000 + rand(0,1000)*3600);
       $startStamp = date('Y-m-d H:i:s', $randomStart);
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
       $dayStarts = $randomStart-1;
       $dayEnds = $randomStart + 3001;
+      // $now =  date('Y-m-d H:i:s', time());
 
-      $meeting = Meeting::create(
+      $meeting = Meeting::factory()->create(
          [
             'name' => $this->faker->sentence(),
-            'startstamp' =>  $startStamp,
-            'endstamp' => $endStamp,
+            'startstamp' => $startStamp,
+            'endstamp' => $endStamp
          ]
       );
-
-
-      $this->json('get', "api/getOptimumMeetings/$dayStarts/$dayEnds")
-         ->assertStatus(Response::HTTP_OK)
-         ->assertJsonStructure(
-            [
-               'data' => [
-                  'id',
-                  'name',
-                  'startstamp',
-                  'endstamp',
-                  'created_at',
+      
+      $this->json('get', "api/getMeetings/$dayStarts/$dayEnds")
+      ->assertStatus(Response::HTTP_OK)
+      ->assertExactJson(
+         [
+            'data' => 
+               [
+                  [
+                     'id' => $meeting->id,
+                     'name' => $meeting->name,
+                     'startstamp' => $meeting->startstamp,
+                     'endstamp' => $meeting->endstamp,
+                     'created_at'  => date('Y-m-d H:i:s', strtotime($meeting->created_at))
+                  ]
                ]
-            ]
-         );
+         ]
+      );
    }
+
+   // public function testGetOptimumMeetingsReturnsDataInValidFormat() {
+   //    $randomStart = (1643500000 + rand(0,1000)*3600);
+   //    $startStamp = date('Y-m-d H:i:s', $randomStart);
+   //    $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
+   //    $dayStarts = $randomStart-1;
+   //    $dayEnds = $randomStart + 3001;
+
+   //    $meeting = Meeting::create(
+   //       [
+   //          'name' => $this->faker->sentence(),
+   //          'startstamp' =>  $startStamp,
+   //          'endstamp' => $endStamp,
+   //       ]
+   //    );
+
+
+   //    $this->json('get', "api/getOptimumMeetings/$dayStarts/$dayEnds")
+   //       ->assertStatus(Response::HTTP_OK)
+   //       ->assertJsonStructure(
+   //          [
+   //             'data' => [
+   //                'id',
+   //                'name',
+   //                'startstamp',
+   //                'endstamp',
+   //                'created_at',
+   //             ]
+   //          ]
+   //       );
+   // }
 
 
    public function testIndexReturnsDataInValidFormat() {
@@ -93,7 +131,7 @@ class MeetingControllerTest extends TestCase {
    }
 
    public function testMeetingIsCreatedSuccessfully() {
-      $randomStart = (1643580060 + rand(0,1000)*3600);
+      $randomStart = (1643500000 + rand(0,1000)*3600);
       $startStamp = date('Y-m-d H:i:s', $randomStart);
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
       $infoToCreate = 
@@ -121,7 +159,7 @@ class MeetingControllerTest extends TestCase {
 
 
    public function testMeetingIsShownCorrectly() {
-      $randomStart = (1643580060 + rand(0,1000)*3600);
+      $randomStart = (1643500000 + rand(0,1000)*3600);
       $startStamp = date('Y-m-d H:i:s', $randomStart);
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
 
@@ -150,7 +188,7 @@ class MeetingControllerTest extends TestCase {
    }
 
    public function testMeetingIsDestroyed() {
-      $randomStart = (1643580060 + rand(0,1000)*3600);
+      $randomStart = (1643500000 + rand(0,1000)*3600);
       $startStamp = date('Y-m-d H:i:s', $randomStart);
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
       $meetingData =
@@ -168,7 +206,7 @@ class MeetingControllerTest extends TestCase {
    }
 
    public function testUpdateMeetingReturnsCorrectData() {
-      $randomStart = (1643580060 + rand(0,1000)*3600);
+      $randomStart = (1643500000 + rand(0,1000)*3600);
       $startStamp = date('Y-m-d H:i:s', $randomStart);
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
 
@@ -180,7 +218,7 @@ class MeetingControllerTest extends TestCase {
             ]
       );
       
-      $randomStart = (1643580060 + rand(0,1000)*3600);
+      $randomStart = (1643500000 + rand(0,1000)*3600);
       $startStamp = date('Y-m-d H:i:s', $randomStart);
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
 
