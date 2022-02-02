@@ -184,6 +184,110 @@ class MeetingControllerTest extends TestCase {
    }
 
 
+   public function testGetOptimumMeetingsReturnsValidSingleData() {
+      $randomStart = (1643500000 + rand(0,1000)*3600);
+      $dayStarts = $randomStart-1;
+      $dayEnds = $randomStart + 20000;
+      $startStamp = date('Y-m-d H:i:s', $randomStart);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
+
+      $meeting = Meeting::create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' =>  $startStamp,
+            'endstamp' => $endStamp,
+         ]
+      );
+
+      $this->json('get', "api/getOptimumMeetings/$dayStarts/$dayEnds")
+         ->assertStatus(Response::HTTP_OK)
+         ->assertExactJson(
+            [
+               'data' => 
+                  [
+                     [
+                        'id' => $meeting->id,
+                        'name' => $meeting->name,
+                        'startstamp' => $meeting->startstamp,
+                        'endstamp' => $meeting->endstamp,
+                        'created_at'  => date('Y-m-d H:i:s', strtotime($meeting->created_at))  //пришлось переформатировать, так как без этого тест ожидал из базы непонятный формат.
+                     ],
+                  ]
+            ]
+         );
+   }
+
+
+   public function testGetOptimumMeetingsReturnsValidMultiData_3() {
+      $randomStart = (1643500000 + rand(0,1000)*3600);
+      $dayStarts = $randomStart-1;
+      $dayEnds = $randomStart + 20000;
+
+
+      $startStamp = date('Y-m-d H:i:s', $randomStart);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
+      $meetingOne = Meeting::create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' =>  $startStamp,
+            'endstamp' => $endStamp,
+         ]
+      );
+
+
+      $startStamp = date('Y-m-d H:i:s', $randomStart + 3100);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 6000);
+      $meetingTwo = Meeting::create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' =>  $startStamp,
+            'endstamp' => $endStamp,
+         ]
+      );
+
+
+      $startStamp = date('Y-m-d H:i:s', $randomStart + 6100);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 9000);
+      $meetingThree = Meeting::create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' =>  $startStamp,
+            'endstamp' => $endStamp,
+         ]
+      );
+
+      $this->json('get', "api/getOptimumMeetings/$dayStarts/$dayEnds")
+         ->assertStatus(Response::HTTP_OK)
+         ->assertExactJson(
+            [
+               'data' => 
+                  [
+                     [
+                        'id' => $meetingOne->id,
+                        'name' => $meetingOne->name,
+                        'startstamp' => $meetingOne->startstamp,
+                        'endstamp' => $meetingOne->endstamp,
+                        'created_at'  => date('Y-m-d H:i:s', strtotime($meetingOne->created_at))  //пришлось переформатировать, так как без этого тест ожидал из базы непонятный формат.
+                     ],
+                     [
+                        'id' => $meetingTwo->id,
+                        'name' => $meetingTwo->name,
+                        'startstamp' => $meetingTwo->startstamp,
+                        'endstamp' => $meetingTwo->endstamp,
+                        'created_at'  => date('Y-m-d H:i:s', strtotime($meetingTwo->created_at))  //...
+                     ],
+                     [
+                        'id' => $meetingThree->id,
+                        'name' => $meetingThree->name,
+                        'startstamp' => $meetingThree->startstamp,
+                        'endstamp' => $meetingThree->endstamp,
+                        'created_at'  => date('Y-m-d H:i:s', strtotime($meetingThree->created_at)) //...
+                     ]
+                  ]
+            ]
+         );
+   }
+
    public function testIndexReturnsDataInValidFormat() {
       $this->json('get', 'api/meetings')
          ->assertStatus(Response::HTTP_OK)
