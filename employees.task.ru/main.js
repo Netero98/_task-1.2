@@ -6,7 +6,7 @@ async function getEmployees() {
    employees = employees.data;
 
    document.querySelector('.employees-list').innerHTML = '';
-   counter = 0
+   let counter = 0;
    employees.forEach(() => {
          document.querySelector('.employees-list').innerHTML += `
          <div class="card" style="width: 18rem;">

@@ -8,21 +8,23 @@ async function getMeetings() {
 
    let res = await fetch(`http://127.0.0.1:8000/api/getMeetings/${dayStarts}/${dayEnds}`);
    let meetings = await res.json();
+   meetings = meetings.data
 
    document.querySelector('.meetings-list').innerHTML = '';
-
-   meetings.forEach((meeting) => {
+   let counter = 0;
+   meetings.forEach(() => {
       document.querySelector('.meetings-list').innerHTML += `
          <div class="card" style="width: 18rem;">
             <div class="card-body">
-               <h5 class="card-title">${meeting.name}</h5>
-               <p class="card-text">Начало: ${meeting.startstamp}</p>
-               <p class="card-text">Конец: ${meeting.endstamp}</p>
-               <a href="#" class="card-link" onclick="deleteMeeting(${meeting.id})">Удалить</a>
-               <div><a href="#" class="card-link" onclick="selectMeeting('${meeting.id}', '${meeting.name}','${meeting.startstamp}', '${meeting.endstamp}')">Выбрать для редактирования</a></div>
+               <h5 class="card-title">${meetings[counter].name}</h5>
+               <p class="card-text">Начало: ${meetings[counter].startstamp}</p>
+               <p class="card-text">Конец: ${meetings[counter].endstamp}</p>
+               <a href="#" class="card-link" onclick="deleteMeeting(${meetings[counter].id})">Удалить</a>
+               <div><a href="#" class="card-link" onclick="selectMeeting('${meetings[counter].id}', '${meetings[counter].name}','${meetings[counter].startstamp}', '${meetings[counter].endstamp}')">Выбрать для редактирования</a></div>
             </div>
          </div>
-      `
+      `;
+      counter++;
    });
 };
 
@@ -33,19 +35,21 @@ async function getOptimumMeetings() {
 
    let res = await fetch(`http://127.0.0.1:8000/api/getOptimumMeetings/${dayStarts}/${dayEnds}`);
    let optimumMeetings = await res.json();
+   optimumMeetings = optimumMeetings.data
 
    document.querySelector('.optimum-meetings-list').innerHTML = '';
-
-   optimumMeetings.forEach((meeting) => {
+   counter = 0;
+   optimumMeetings.forEach(() => {
       document.querySelector('.optimum-meetings-list').innerHTML += `
          <div class="card" style="width: 18rem;">
             <div class="card-body">
-               <h5 class="card-title">${meeting.name}</h5>
-               <p class="card-text">Начало: ${meeting.startstamp}</p>
-               <p class="card-text">Конец: ${meeting.endstamp}</p>
+               <h5 class="card-title">${optimumMeetings[counter].name}</h5>
+               <p class="card-text">Начало: ${optimumMeetings[counter].startstamp}</p>
+               <p class="card-text">Конец: ${optimumMeetings[counter].endstamp}</p>
             </div>
          </div>
-      `
+      `;
+      counter++;
    });
 };
 
