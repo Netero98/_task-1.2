@@ -73,43 +73,44 @@ class MeetingControllerTest extends TestCase {
                      'name' => $meeting->name,
                      'startstamp' => $meeting->startstamp,
                      'endstamp' => $meeting->endstamp,
-                     'created_at'  => date('Y-m-d H:i:s', strtotime($meeting->created_at))
+                     'created_at'  => date('Y-m-d H:i:s', strtotime($meeting->created_at))  //пришлось переформатировать, так как без этого тест ожидал из базы непонятный формат.
                   ]
                ]
          ]
       );
    }
 
-   // public function testGetOptimumMeetingsReturnsDataInValidFormat() {
-   //    $randomStart = (1643500000 + rand(0,1000)*3600);
-   //    $startStamp = date('Y-m-d H:i:s', $randomStart);
-   //    $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
-   //    $dayStarts = $randomStart-1;
-   //    $dayEnds = $randomStart + 3001;
+   public function testGetOptimumMeetingsReturnsDataInValidFormat() {
+      $randomStart = (1643500000 + rand(0,1000)*3600);
+      $startStamp = date('Y-m-d H:i:s', $randomStart);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
+      $dayStarts = $randomStart-1;
+      $dayEnds = $randomStart + 3001;
 
-   //    $meeting = Meeting::create(
-   //       [
-   //          'name' => $this->faker->sentence(),
-   //          'startstamp' =>  $startStamp,
-   //          'endstamp' => $endStamp,
-   //       ]
-   //    );
+      Meeting::create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' =>  $startStamp,
+            'endstamp' => $endStamp,
+         ]
+      );
 
-
-   //    $this->json('get', "api/getOptimumMeetings/$dayStarts/$dayEnds")
-   //       ->assertStatus(Response::HTTP_OK)
-   //       ->assertJsonStructure(
-   //          [
-   //             'data' => [
-   //                'id',
-   //                'name',
-   //                'startstamp',
-   //                'endstamp',
-   //                'created_at',
-   //             ]
-   //          ]
-   //       );
-   // }
+      $this->json('get', "api/getOptimumMeetings/$dayStarts/$dayEnds")
+         ->assertStatus(Response::HTTP_OK)
+         ->assertJsonStructure(
+            [
+               'data' => [
+                  '*' => [
+                     'id',
+                     'name',
+                     'startstamp',
+                     'endstamp',
+                     'created_at',
+                  ]
+               ]
+            ]
+         );
+   }
 
 
    public function testIndexReturnsDataInValidFormat() {
@@ -181,7 +182,7 @@ class MeetingControllerTest extends TestCase {
                      'name' => $meeting->name,
                      'startstamp' => $meeting->startstamp,
                      'endstamp' => $meeting->endstamp,
-                     'created_at' => $meeting->created_at,
+                     'created_at' =>  $meeting->created_at
                   ]
             ]
          );
