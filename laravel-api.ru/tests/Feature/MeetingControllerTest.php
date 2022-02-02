@@ -3,11 +3,10 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+// use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use App\Models\Meeting;
-use Database\Seeders\MeetingSeeder;
 
 class MeetingControllerTest extends TestCase {
    use RefreshDatabase;
