@@ -20,7 +20,7 @@ class MeetingControllerTest extends TestCase {
       $dayStarts = $randomStart-1;
       $dayEnds = $randomStart + 3001;
 
-      $meeting = Meeting::factory()->create(
+      Meeting::factory()->create(
          [
             'name' => $this->faker->sentence(),
             'startstamp' => $startStamp,
