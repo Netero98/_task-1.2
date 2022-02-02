@@ -10,6 +10,70 @@ use App\Models\Meeting;
 
 class MeetingControllerTest extends TestCase {
 
+   public function testGetMeetingsReturnsDataInValidFormat() {
+      $randomStart = (1643580060 + rand(0,1000)*3600);
+      $startStamp = date('Y-m-d H:i:s', $randomStart);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
+      $dayStarts = $randomStart-1;
+      $dayEnds = $randomStart + 3001;
+
+      $meeting = Meeting::create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' =>  $startStamp,
+            'endstamp' => $endStamp,
+         ]
+      );
+
+
+      $this->json('get', "api/getMeetings/$dayStarts/$dayEnds")
+         ->assertStatus(Response::HTTP_OK)
+         ->assertJsonStructure(
+            [
+               'data' => [
+                  'id',
+                  'name',
+                  'startstamp',
+                  'endstamp',
+                  'created_at',
+               ]
+            ]
+         );
+   }
+
+
+   public function testGetOptimumMeetingsReturnsDataInValidFormat() {
+      $randomStart = (1643580060 + rand(0,1000)*3600);
+      $startStamp = date('Y-m-d H:i:s', $randomStart);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
+      $dayStarts = $randomStart-1;
+      $dayEnds = $randomStart + 3001;
+
+      $meeting = Meeting::create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' =>  $startStamp,
+            'endstamp' => $endStamp,
+         ]
+      );
+
+
+      $this->json('get', "api/getOptimumMeetings/$dayStarts/$dayEnds")
+         ->assertStatus(Response::HTTP_OK)
+         ->assertJsonStructure(
+            [
+               'data' => [
+                  'id',
+                  'name',
+                  'startstamp',
+                  'endstamp',
+                  'created_at',
+               ]
+            ]
+         );
+   }
+
+
    public function testIndexReturnsDataInValidFormat() {
       $this->json('get', 'api/meetings')
          ->assertStatus(Response::HTTP_OK)
@@ -127,17 +191,17 @@ class MeetingControllerTest extends TestCase {
       ];
             
       $this->json('put', "api/meetings/$meeting->id", $newMeetingInfo)
-            ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson(
-               [
-                  'data' => [
-                        'id' => $meeting->id,
-                        'name' => $newMeetingInfo['name'],
-                        'startstamp' => $newMeetingInfo['startstamp'],
-                        'endstamp' => $newMeetingInfo['endstamp'],
-                        'created_at' => $meeting->created_at,
-                  ]
+         ->assertStatus(Response::HTTP_OK)
+         ->assertExactJson(
+            [
+               'data' => [
+                     'id' => $meeting->id,
+                     'name' => $newMeetingInfo['name'],
+                     'startstamp' => $newMeetingInfo['startstamp'],
+                     'endstamp' => $newMeetingInfo['endstamp'],
+                     'created_at' => $meeting->created_at,
                ]
-            );
+            ]
+         );
    }
 }
