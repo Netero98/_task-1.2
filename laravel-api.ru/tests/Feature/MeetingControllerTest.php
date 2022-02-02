@@ -52,7 +52,6 @@ class MeetingControllerTest extends TestCase {
       $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
       $dayStarts = $randomStart-1;
       $dayEnds = $randomStart + 3001;
-      // $now =  date('Y-m-d H:i:s', time());
 
       $meeting = Meeting::factory()->create(
          [
@@ -74,6 +73,78 @@ class MeetingControllerTest extends TestCase {
                      'startstamp' => $meeting->startstamp,
                      'endstamp' => $meeting->endstamp,
                      'created_at'  => date('Y-m-d H:i:s', strtotime($meeting->created_at))  //пришлось переформатировать, так как без этого тест ожидал из базы непонятный формат.
+                  ]
+               ]
+         ]
+      );
+   }
+
+
+   public function testGetMeetingsReturnsValidMultiData_3() {
+      
+      $randomStart = (1643500000 + rand(0,1000)*3600);
+      $dayStarts = $randomStart-1;
+      $dayEnds = $randomStart + 20000;
+
+
+      $startStamp = date('Y-m-d H:i:s', $randomStart);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000);
+      $meetingOne = Meeting::factory()->create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' => $startStamp,
+            'endstamp' => $endStamp
+         ]
+      );
+
+
+      $startStamp = date('Y-m-d H:i:s', $randomStart + 1000);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000 + 1000);
+      $meetingTwo = Meeting::factory()->create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' => $startStamp,
+            'endstamp' => $endStamp
+         ]
+      );
+
+
+      $startStamp = date('Y-m-d H:i:s', $randomStart + 2000);
+      $endStamp = date('Y-m-d H:i:s', $randomStart + 3000 + 2000);
+      $meetingThree = Meeting::factory()->create(
+         [
+            'name' => $this->faker->sentence(),
+            'startstamp' => $startStamp,
+            'endstamp' => $endStamp
+         ]
+      );
+      
+      $this->json('get', "api/getMeetings/$dayStarts/$dayEnds")
+      ->assertStatus(Response::HTTP_OK)
+      ->assertExactJson(
+         [
+            'data' => 
+               [
+                  [
+                     'id' => $meetingOne->id,
+                     'name' => $meetingOne->name,
+                     'startstamp' => $meetingOne->startstamp,
+                     'endstamp' => $meetingOne->endstamp,
+                     'created_at'  => date('Y-m-d H:i:s', strtotime($meetingOne->created_at))  //пришлось переформатировать, так как без этого тест ожидал из базы непонятный формат.
+                  ],
+                  [
+                     'id' => $meetingTwo->id,
+                     'name' => $meetingTwo->name,
+                     'startstamp' => $meetingTwo->startstamp,
+                     'endstamp' => $meetingTwo->endstamp,
+                     'created_at'  => date('Y-m-d H:i:s', strtotime($meetingTwo->created_at))  //...
+                  ],
+                  [
+                     'id' => $meetingThree->id,
+                     'name' => $meetingThree->name,
+                     'startstamp' => $meetingThree->startstamp,
+                     'endstamp' => $meetingThree->endstamp,
+                     'created_at'  => date('Y-m-d H:i:s', strtotime($meetingThree->created_at)) //...
                   ]
                ]
          ]
